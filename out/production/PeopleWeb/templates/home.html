@@ -2,8 +2,18 @@
 <body>
 
 {{#people}}
-<a href="/?offset=20">{{firstName}}</a>
+<a href="/person?id={{id}}">{{firstName}} {{lastName}}</a><br>
 {{/people}}
+
+{{#previous}}
+<a href="/?offset={{previous}}">Previous</a>
+{{/previous}}
+
+{{#next}}
+<a href="/?offset={{next}}">  Next</a>
+{{/next}}
+
+<br>
 
 </body>
 </html>

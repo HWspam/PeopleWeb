@@ -1,12 +1,12 @@
 package com.company;
 
+import spark.ModelAndView;
 import spark.Spark;
+import spark.template.mustache.MustacheTemplateEngine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -21,8 +21,8 @@ public class Main {
 
         while(scanner.hasNext()) {
             String yep = scanner.nextLine();
-            String [] a = yep.split(",");
-            Person eachSpot = new Person(Integer.parseInt(a[0]), a[1], a[2], a[3], a[4],a[5]);
+            String [] a = yep.split("\\,");
+            Person eachSpot = new Person(a[0] ,a[1], a[2], a[3], a[4],a[5]);
             nameAbrev.add(eachSpot);
         }
         Spark.staticFileLocation("/public");
@@ -31,28 +31,42 @@ public class Main {
         Spark.get(
                 "/",
                 (((request, response) -> {
-                   String name =
+                   String name = request.queryParams("offset");
+                    int b = 0;
+                    if (name != null && !name.isEmpty()) {
+                        b = Integer.parseInt(name);
+                    }
 
-
-
-                    return "";
-
-                }))
-
+                    ArrayList<Person> z = new ArrayList<Person>();
+                    for (int i = 0; i<20; i++) {
+                        z.add(nameAbrev.get(b+1));
+                    }
+                    HashMap hm = new HashMap();
+                    hm.put("people", z);
+                    if (b-20 >= 0){
+                        hm.put("previous", b -20);
+                    }
+                    if (b+20 < nameAbrev.size()) {
+                        hm.put("next", b +20);
+                    }
+                    return new ModelAndView(hm, "home.html");
+                })),
+                new MustacheTemplateEngine()
         );
+
         Spark.get(
                 "/person",
                 (((request, response) -> {
 
                     HashMap what = new HashMap();
-                    Person ok = Person.setId();
-                    Person singlePerson = nameAbrev.get(ok);
+                    int id = Integer.valueOf(request.queryParams("id"));
+                    Person ok = nameAbrev.get(id -1);
+                    what.put("person", ok);
+                    return new ModelAndView(what, "person.html");
 
-                    what.put(ok, singlePerson);
+                })),
+                new MustacheTemplateEngine()
 
-
-                    return "";
-                }))
         );
 
 

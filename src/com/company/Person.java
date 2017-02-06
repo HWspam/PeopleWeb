@@ -4,18 +4,18 @@ package com.company;
  * Created by erikjakubowski on 12/7/16.
  */
 public class Person {
-    int id;
+    String id;
     String firstName;
     String lastName;
     String email;
     String country;
     String IPAddress;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -59,7 +59,7 @@ public class Person {
         this.IPAddress = IPAddress;
     }
 
-    public Person(int id, String firstName, String lastName, String email, String country, String IPAddress) {
+    public Person(String id, String firstName, String lastName, String email, String country, String IPAddress) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
